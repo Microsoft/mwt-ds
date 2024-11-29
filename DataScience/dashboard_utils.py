@@ -49,7 +49,7 @@ def output_dashboard_data(d, dashboard_file, commands={}, sep=':'):
         temp = x.split(sep)
         df_col.setdefault(temp[0],[]).append(temp[1])
 
-    agg_windows = [('5T',5),('H',60),('6H',360),('D',1440)]
+    agg_windows = [('5T',5),('10T',10),('30T',30),('H',60),('2H',2*60),('3H',3*60),('6H',6*60),('D',24*60),('7D',7*1440)]
     with open(dashboard_file, 'a') as f:
         for ag in agg_windows:
             for index, row in df.resample(ag[0]).agg({type+sep+field : max if field == 'c' else sum for type in df_col for field in df_col[type]}).replace(np.nan, 0.0).iterrows():
